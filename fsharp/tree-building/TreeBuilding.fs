@@ -33,7 +33,7 @@ let buildTree records =
 
     let root = List.partition (fun x -> x.RecordId = 0) records
     if List.exists (fun x -> x.RecordId = x.ParentId) (snd root) then failwith "Invalid cycle"
-
+    
     match root with 
     | ([],_) -> failwith "No root found"
     | (r,_) when r.Length > 1 -> failwith "More than one root"

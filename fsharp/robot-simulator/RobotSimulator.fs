@@ -29,11 +29,11 @@ let advance (robot: Robot) =
     | South -> { robot with position = (x, y - 1) }
     | West -> { robot with position = (x - 1, y) }
 
-let instructions (instructions':string) (robot:Robot) = 
-    let rec runStep (steps:char[], target:Robot) =
-        match Array.tryHead steps with
-        | Some 'A' -> runStep (Array.tail steps, advance target)
-        | Some 'L' -> runStep (Array.tail steps, turnLeft target)
-        | Some 'R' -> runStep (Array.tail steps, turnRight target)
-        | _ -> target
-    runStep (instructions'.ToCharArray(), robot)
+let rec private runStep robot = 
+    function
+    | 'A'::rem -> runStep (advance robot) rem
+    | 'L'::rem -> runStep (turnLeft robot) rem
+    | 'R'::rem -> runStep (turnRight robot) rem
+    | _ -> robot
+
+let instructions instructions' robot = Seq.toList instructions' |> runStep robot

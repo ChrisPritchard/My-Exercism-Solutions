@@ -9,7 +9,7 @@ let mkEntry date description change = {
         date = DateTime.Parse(date, CultureInfo.InvariantCulture); 
         description = description; change = change 
     }
-
+        
 let formatLedger currency (locale:string) entries = 
     let culture = new CultureInfo(locale)
     culture.NumberFormat.CurrencySymbol <- match currency with | "EUR" -> "€" | _ -> "$"

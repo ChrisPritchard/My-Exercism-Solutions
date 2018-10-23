@@ -34,7 +34,7 @@ let pitches (tonic:string) (intervals: string Option) =
         match newPitch with
         | _ when newPitch = tonic -> ()
         | _ -> yield newPitch
-
+        
         match List.tail remaining with
         | [] -> ()
         | t -> yield! next newPitch t

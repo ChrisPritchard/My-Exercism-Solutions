@@ -26,5 +26,5 @@ let exprational n r =
     else
         let m = FSharp.Core.Operators.abs n 
         create (pown r.b m) (pown r.a m) |> reduce
-
+    
 let expreal r x = (pown (float x) r.a |> float) ** (1.0 / (float r.b))

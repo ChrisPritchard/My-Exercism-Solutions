@@ -18,7 +18,7 @@ type InputCell (initialValue: int) =
             if newValue <> value then 
                 value <- newValue
                 changed.Trigger newValue
-
+                
 type ComputeCell (sources: Cell list, computation: int list -> int) =
     inherit Cell()
 

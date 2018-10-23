@@ -10,6 +10,7 @@ let isNil x = match x with | None -> true | _ -> false
 
 let next (x:ListItem option) = match x with | None -> nil | Some i -> i.next
 
+
 let datum (x:ListItem option) = match x with | None -> 0 | Some i -> i.data
 
 let rec toList (x: ListItem Option) = 

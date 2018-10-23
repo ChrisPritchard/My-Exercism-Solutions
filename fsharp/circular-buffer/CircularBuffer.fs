@@ -10,7 +10,7 @@ let write value buffer =
     match buffer.size = buffer.data.Length with
     | true -> failwith "Buffer is full"
     | false -> { size = buffer.size; data = buffer.data @ [value] }
-
+        
 let forceWrite value buffer = 
     match buffer.size = buffer.data.Length with
     | true -> { size = buffer.size; data = List.tail buffer.data @ [value] }

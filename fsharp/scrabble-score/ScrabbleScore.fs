@@ -17,5 +17,5 @@ let scoreMap =
         scoreMapText.Split('\n', StringSplitOptions.RemoveEmptyEntries) 
         |> Array.map (fun line -> line.Replace(",", "").Split(' ', StringSplitOptions.RemoveEmptyEntries) |> Array.rev |> processRow)
     cells |> Array.collect id |> Map.ofArray
-
+        
 let score (word:string) = Seq.sumBy (fun x -> scoreMap.[x.ToString().ToUpper()]) word

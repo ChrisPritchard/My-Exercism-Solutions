@@ -1,5 +1,5 @@
 module Dominoes
-
+    
 let rec private remove elem lst =
     match lst with
     | h::t when h = elem -> t

@@ -1,5 +1,5 @@
 module Tournament
-
+    
 let tally input = 
     let update team res teams =
         let (mp,w,d,l,p) = match Map.tryFind team teams with | Some n -> n | None -> (0,0,0,0,0)

@@ -3,9 +3,9 @@ open System
 
 type Allergen = | Eggs = 1 | Peanuts = 2 | Shellfish = 4 | Strawberries = 8 | Tomatoes = 16 | Chocolate = 32 | Pollen = 64 | Cats = 128
 
-let allergicTo codedAllergies (allergen:Allergen) = 
+let allergicTo codedAllergies (allergen : Allergen) = 
     let value = int allergen;
-    value |> (&&&) codedAllergies |> (=) value
+    codedAllergies &&& value = value
 
 let list codedAllergies = 
     Enum.GetValues(typeof<Allergen>) :?> Allergen[] 
