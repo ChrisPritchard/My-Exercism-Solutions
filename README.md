@@ -1,6 +1,6 @@
 # My Exercism Solutions
 
-An archive of all my solutions to Exercism <https://exercism.io/> exercises. So far this includes C# and F#.
+An archive of all my solutions to Exercism <https://exercism.io/> exercises. So far this includes F#, C# and Go.
 
 Exercism is the primary way I learned F#, over the course of a 114 occasionally very grueling exercises. An excellent learning tool :)
 
