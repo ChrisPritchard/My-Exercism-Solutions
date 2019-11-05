@@ -2,3 +2,5 @@
 /**/bin
 /**/obj
 /.ionide
+__pycache__
+.exercism
