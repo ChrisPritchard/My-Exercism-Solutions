@@ -13,13 +13,11 @@ let formatFile path =
         printfn "Formatted %s" <| Path.GetFileName(path)
         File.WriteAllLines (path, fst newLines |> List.rev)
 
-[<EntryPoint>]
-let main argv =
-    match argv with
-    | [|path|] when Directory.Exists path -> 
-        let files = Directory.GetFiles(path, "*.fs", SearchOption.AllDirectories)
-        files |> Array.iter formatFile
-        0
-    | _ -> 
-        printfn "Invalid arguments: expected a single path value"
-        -1
+printf "enter path: "
+let path = Console.ReadLine ()
+
+if not (Directory.Exists path) then
+    printfn "Invalid path: directory could not be found"
+else
+    let files = Directory.GetFiles(path, "*.fs", SearchOption.AllDirectories)
+    files |> Array.iter formatFile
