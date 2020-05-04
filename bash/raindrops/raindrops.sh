@@ -2,7 +2,7 @@
 
 if [ $# != 1 ]
 then
-    echo "usage: <number>"
+    exit 1
 fi
 
 result=""
@@ -18,11 +18,4 @@ test $1 3 Pling
 test $1 5 Plang
 test $1 7 Plong
 
-if [ "$result" == "" ] 
-then 
-    echo $1 
-else 
-    echo $result 
-fi
-
-exit 0
+echo ${result:-$1}
