@@ -16,10 +16,7 @@ right=$2
 
 for ((i=0;i<${#left};i++))
 do
-    if [ ${left:$i:1} != ${right:$i:1} ]
-    then
-        result=$((result+1))
-    fi
+    [ ${left:$i:1} == ${right:$i:1} ] || result=$((result+1))
 done
 
 echo $result
