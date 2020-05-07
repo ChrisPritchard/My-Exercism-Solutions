@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
 
-sets=( "AEIOULNRST" "DG" "BCMP" "FHVWY" "K" "JX" "QZ" )
-scores=( 1 2 3 4 5 8 10 )
+read -r -d '' scores <<'EOF'
+A, E, I, O, U, L, N, R, S, T       1
+D, G                               2
+B, C, M, P                         3
+F, H, V, W, Y                      4
+K                                  5
+J, X                               8
+Q, Z                               10
+EOF
 
 total=0
-for ((i=0;i<${#1};i++))
+for char in $(echo $1 | fold -w1)
 do
-    char=$(echo ${1:$i:1} | tr a-z A-Z)
-    for ((j=0;j<${#sets};j++)) 
-    do 
-        set=${sets[$j]}
-        contained=$(echo $set | grep $char | wc -l)
-        if [ $contained -eq 1 ]
-        then 
-            score=${scores[$j]}
-            total=$(($total+$score))
-        fi
-    done
+    char=$(echo $char | tr a-z A-Z)
+    score=$(echo "$scores" | grep $char | rev | cut -d" " -f1 | rev)
+    total=$(($total+$score))
 done
 
 echo $total
