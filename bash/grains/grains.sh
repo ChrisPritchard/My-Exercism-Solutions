@@ -2,6 +2,7 @@
 
 if [ $1 = "total" ]
 then
+    # also doable with 2^64 - 1, but that feels like just printing the precomputed answer.
     total="0"
     for ((n=1;n<65;n++))
     do
