@@ -10,13 +10,16 @@ fi
 sides=($2 $3 $4)
 IFS=$'\n' sides=($(sort <<< "${sides[*]}")); unset IFS
 
-if [ $(bc <<< "$sides[0] > 0 && $sides[0] + $sides[1] >= $sides[2]") -eq 0 ]; then
-    echo "false"
-    exit 0
-fi
+one=${sides[0]}
+two=${sides[1]}
+three=${sides[2]}
 
-if [ "$type" == "isosceles" ]; then
-    [ $(bc <<< "$sides[0] == $sides[1] || $sides[1] == $sides[2]") -eq 1 ] && echo "true" || echo "false"
+if [ $(bc <<< "$one > 0 && $one + $two >= $three") -eq 0 ]; then
+    echo "false"
+elif [ "$type" == "isosceles" ]; then
+    [ $(bc <<< "$one == $two || $two == $three") -eq 1 ] && echo "true" || echo "false"
 elif [ "$type" == "scalene" ]; then
-    [ $(bc <<< "$sides[0] != $sides[1] && $sides[1] != $sides[2] && $sides[0] != $sides[2]") -eq 1 ] && echo "true" || echo "false"
+    [ $(bc <<< "$one != $two && $two != $three && $one != $three") -eq 1 ] && echo "true" || echo "false"
+else
+    echo "false"
 fi
