@@ -13,6 +13,17 @@ func spaces(n int) string {
 	return result
 }
 
+func row(dist, i int, c byte) string {
+	pad := dist - i
+	gap := (dist * 2) - (pad * 2) - 1
+	cd := c - byte(dist-i)
+	if i == 0 {
+		return fmt.Sprintf("%s%c%s\n", spaces(pad), cd, spaces(pad))
+	} else {
+		return fmt.Sprintf("%s%c%s%c%s\n", spaces(pad), cd, spaces(gap), cd, spaces(pad))
+	}
+}
+
 func Gen(c byte) (string, error) {
 	if c < 'A' || c > 'Z' {
 		return "", errors.New("invalid character: " + string(c))
@@ -24,27 +35,13 @@ func Gen(c byte) (string, error) {
 	result := ""
 
 	for i := 0; i < dist; i++ {
-		pad := dist - i
-		gap := (dist * 2) - (pad * 2) - 1
-		cd := c - byte(dist-i)
-		if i == 0 {
-			result += fmt.Sprintf("%s%c%s\n", spaces(pad), cd, spaces(pad))
-		} else {
-			result += fmt.Sprintf("%s%c%s%c%s\n", spaces(pad), cd, spaces(gap), cd, spaces(pad))
-		}
+		result += row(dist, i, c)
 	}
 
 	result += fmt.Sprintf("%c%s%c\n", c, spaces(dist*2-1), c)
 
 	for i := dist - 1; i >= 0; i-- {
-		pad := dist - i
-		gap := (dist * 2) - (pad * 2) - 1
-		cd := c - byte(dist-i)
-		if i == 0 {
-			result += fmt.Sprintf("%s%c%s\n", spaces(pad), cd, spaces(pad))
-		} else {
-			result += fmt.Sprintf("%s%c%s%c%s\n", spaces(pad), cd, spaces(gap), cd, spaces(pad))
-		}
+		result += row(dist, i, c)
 	}
 
 	return result, nil
