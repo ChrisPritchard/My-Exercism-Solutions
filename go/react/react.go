@@ -7,75 +7,58 @@ package react
 //
 
 type MyReactor struct {
-	directs []direct
-	doubles []double
-}
-
-type direct struct {
-	target   Cell
-	source   Cell
-	onChange func(int)
-}
-
-type double struct {
-	target   Cell
-	source1  Cell
-	source2  Cell
-	onChange func(int, int)
 }
 
 func New() *MyReactor {
-	return &MyReactor{[]direct{}, []double{}}
-}
-
-func (r *MyReactor) updateFor(c Cell) {
-	for _, d := range r.directs {
-		if d.source == c {
-			var v = d.target.Value()
-			d.onChange(c.Value())
-			if d.target.Value() != v {
-				r.updateFor(d.target)
-			}
-		}
-	}
-
-	for _, d := range r.doubles {
-		if d.source1 == c {
-			var v = d.target.Value()
-			d.onChange(c.Value())
-			if d.target.Value() != v {
-				r.updateFor(d.target)
-			}
-		}
-	}
+	return &MyReactor{}
 }
 
 func (r *MyReactor) CreateInput(n int) InputCell {
 	v := MyInputCell{}
 	v.value = n
-	v.reactor = r
+	v.onChange = func(int) {}
 	return &v
 }
 
 func (r *MyReactor) CreateCompute1(source Cell, onChange func(int) int) ComputeCell {
 	v := MyComputeCell{}
-	v.reactor = r
 	v.value = onChange(source.Value())
-	r.directs = append(r.directs, direct{v, source, func(s int) { v.value = onChange(s) }})
+	v.onChange = func(int) {}
+	v.callbacks = []func(int){}
+	switch s := source.(type) {
+	case *MyInputCell:
+		s.onChange = func(n int) {
+			s.onChange(n)
+			nd := onChange(n)
+			if nd != v.value {
+				v.value = nd
+				v.onChange(nd)
+			}
+		}
+	case *MyComputeCell:
+		s.onChange = func(n int) {
+			s.onChange(n)
+			nd := onChange(n)
+			if nd != v.value {
+				v.value = nd
+				v.onChange(nd)
+			}
+		}
+	}
 	return &v
 }
 
 func (r *MyReactor) CreateCompute2(source1 Cell, source2 Cell, onChange func(int, int) int) ComputeCell {
 	v := MyComputeCell{}
-	v.reactor = r
 	v.value = onChange(source1.Value(), source2.Value())
-	r.doubles = append(r.doubles, double{v, source1, source2, func(s1 int, s2 int) { v.value = onChange(s1, s2) }})
+	v.onChange = func(int) {}
+	v.callbacks = []func(int){}
 	return &v
 }
 
 type MyCell struct {
-	value   int
-	reactor *MyReactor
+	value    int
+	onChange func(int)
 }
 
 func (c MyCell) Value() int {
@@ -91,20 +74,25 @@ func (c *MyInputCell) SetValue(v int) {
 		return
 	}
 	c.value = v
-	c.reactor.updateFor(c)
+	c.onChange(v)
 }
 
 type MyComputeCell struct {
 	MyCell
+	callbacks []func(int)
 }
 
 func (c *MyComputeCell) AddCallback(callback func(int)) Canceler {
-	return &MyCanceler{}
+	index := len(c.callbacks)
+	c.callbacks = append(c.callbacks, callback)
+	return &MyCanceler{c, index}
 }
 
 type MyCanceler struct {
+	computeCell *MyComputeCell
+	index       int
 }
 
 func (c *MyCanceler) Cancel() {
-
+	c.computeCell.callbacks = append(c.computeCell.callbacks[:c.index], c.computeCell.callbacks[c.index+1:]...)
 }
