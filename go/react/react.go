@@ -14,22 +14,40 @@ type MyReactor struct {
 type direct struct {
 	target   Cell
 	source   Cell
-	onChange func(int) int
+	onChange func(int)
 }
 
 type double struct {
 	target   Cell
 	source1  Cell
 	source2  Cell
-	onChange func(int, int) int
+	onChange func(int, int)
 }
 
 func New() *MyReactor {
 	return &MyReactor{[]direct{}, []double{}}
 }
 
-func (r MyReactor) updateFor(c MyCell) {
+func (r *MyReactor) updateFor(c Cell) {
+	for _, d := range r.directs {
+		if d.source == c {
+			var v = d.target.Value()
+			d.onChange(c.Value())
+			if d.target.Value() != v {
+				r.updateFor(d.target)
+			}
+		}
+	}
 
+	for _, d := range r.doubles {
+		if d.source1 == c {
+			var v = d.target.Value()
+			d.onChange(c.Value())
+			if d.target.Value() != v {
+				r.updateFor(d.target)
+			}
+		}
+	}
 }
 
 func (r *MyReactor) CreateInput(n int) InputCell {
@@ -43,7 +61,7 @@ func (r *MyReactor) CreateCompute1(source Cell, onChange func(int) int) ComputeC
 	v := MyComputeCell{}
 	v.reactor = r
 	v.value = onChange(source.Value())
-	r.directs = append(r.directs, direct{v, source, onChange})
+	r.directs = append(r.directs, direct{v, source, func(s int) { v.value = onChange(s) }})
 	return &v
 }
 
@@ -51,7 +69,7 @@ func (r *MyReactor) CreateCompute2(source1 Cell, source2 Cell, onChange func(int
 	v := MyComputeCell{}
 	v.reactor = r
 	v.value = onChange(source1.Value(), source2.Value())
-	r.doubles = append(r.doubles, double{v, source1, source2, onChange})
+	r.doubles = append(r.doubles, double{v, source1, source2, func(s1 int, s2 int) { v.value = onChange(s1, s2) }})
 	return &v
 }
 
