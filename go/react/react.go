@@ -26,7 +26,6 @@ func (r *MyReactor) CreateCompute2(source1 Cell, source2 Cell, onChange func(int
 	v := MyCell{}
 	v.getValue = func() int { return onChange(source1.Value(), source2.Value()) }
 	v.value = v.getValue()
-	v.callbacks = []*func(int){}
 	source1.(*MyCell).addDependency(&v)
 	source2.(*MyCell).addDependency(&v)
 	return &v
@@ -48,25 +47,22 @@ func (c *MyCell) Value() int {
 }
 
 func (c *MyCell) SetValue(v int) {
-	if c.value == v {
-		return
+	if c.value != v {
+		c.value = v
+		callCallbacks(c.dependents)
 	}
-	c.value = v
-
-	callCallbacks(c.dependents)
 }
 
 func callCallbacks(deps []*MyCell) {
 	for _, c := range deps {
 		nv := c.Value()
-		if c.value == nv {
-			continue
+		if c.value != nv {
+			c.value = nv
+			for _, cb := range c.callbacks {
+				(*cb)(nv)
+			}
+			callCallbacks(c.dependents)
 		}
-		c.value = nv
-		for _, cb := range c.callbacks {
-			(*cb)(nv)
-		}
-		callCallbacks(c.dependents)
 	}
 }
 
