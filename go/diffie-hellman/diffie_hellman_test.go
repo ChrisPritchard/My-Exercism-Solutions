@@ -73,7 +73,6 @@ func mph(h string) *big.Int {
 
 var tests = []testCase{
 	smallTest,
-	biggerTest,
 }
 
 var _one = big.NewInt(1)
