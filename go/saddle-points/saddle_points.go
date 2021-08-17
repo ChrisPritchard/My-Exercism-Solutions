@@ -33,21 +33,25 @@ func New(input string) (*Matrix, error) {
 	return &m, nil
 }
 
-func max(row []int) int {
-	i := 0
+func max(row []int) []int {
+	i := []int{0}
 	for c := 1; c < len(row); c++ {
-		if row[c] > row[i] {
-			i = c
+		if row[c] > row[i[0]] {
+			i = []int{c}
+		} else if row[c] == row[i[0]] {
+			i = append(i, c)
 		}
 	}
 	return i
 }
 
-func min(rows [][]int, col int) int {
-	i := 0
+func min(rows [][]int, col int) []int {
+	i := []int{0}
 	for r := 1; r < len(rows); r++ {
-		if rows[r][col] < rows[i][col] {
-			i = r
+		if rows[r][col] < rows[i[0]][col] {
+			i = []int{r}
+		} else if rows[r][col] == rows[i[0]][col] {
+			i = append(i, r)
 		}
 	}
 	return i
@@ -56,9 +60,12 @@ func min(rows [][]int, col int) int {
 func (m Matrix) Saddle() []Pair {
 	results := []Pair{}
 	for r := 0; r < len(m); r++ {
-		mx := max(m[r])
-		if r == min(m, mx) {
-			results = append(results, Pair{r, mx})
+		for _, mx := range max(m[r]) {
+			for _, mn := range min(m, mx) {
+				if r == mn {
+					results = append(results, Pair{r, mx})
+				}
+			}
 		}
 	}
 	return results
