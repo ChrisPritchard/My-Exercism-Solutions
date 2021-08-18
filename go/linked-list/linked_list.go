@@ -1,10 +1,8 @@
 package linkedlist
 
-import "errors"
-
 type Node struct {
 	Val        interface{}
-	next, prev *Node
+	prev, next *Node
 }
 
 type List struct {
@@ -14,83 +12,86 @@ type List struct {
 var ErrEmptyList error
 
 func (e *Node) Next() *Node {
-	if e == nil || e.next == e {
+	if e == nil {
 		return nil
 	}
 	return e.next
 }
 
 func (e *Node) Prev() *Node {
-	if e == nil || e.prev == e {
+	if e == nil {
 		return nil
 	}
 	return e.prev
 }
 
 func NewList(args ...interface{}) *List {
-	var tail *Node = nil
-	head := tail
+	var head *Node = nil
+	tail := head
 	for _, v := range args {
-		if tail == nil {
-			tail = &Node{v, nil, nil}
-			head = tail
+		if head == nil {
+			head = &Node{v, nil, nil}
+			tail = head
 		} else {
-			newHead := &Node{v, head, nil}
-			head.next = newHead
-			head = newHead
+			newTail := &Node{v, tail, nil}
+			tail.next = newTail
+			tail = newTail
 		}
 	}
 	return &List{head, tail}
 }
 
 func (l *List) PushFront(v interface{}) {
-	newHead := &Node{v, l.head, nil}
+	newHead := &Node{v, nil, l.head}
 	if l.head != nil {
-		l.head.next = newHead
+		l.head.prev = newHead
 	}
 	l.head = newHead
 }
 
 func (l *List) PushBack(v interface{}) {
-	newTail := &Node{v, nil, l.tail}
+	newTail := &Node{v, l.tail, nil}
 	if l.tail != nil {
-		l.tail.prev = newTail
+		l.tail.next = newTail
 	}
 	l.tail = newTail
 }
 
 func (l *List) PopFront() (interface{}, error) {
 	if l.head == nil {
-		return nil, errors.New("list is empty")
+		return nil, ErrEmptyList
 	}
 	v := l.head.Val
-	l.head = l.head.prev
+	l.head = l.head.next
 	if l.head != nil {
-		l.head.next = nil
+		l.head.prev = nil
 	}
 	return v, nil
 }
 
 func (l *List) PopBack() (interface{}, error) {
 	if l.tail == nil {
-		return nil, errors.New("list is empty")
+		return nil, ErrEmptyList
 	}
 	v := l.tail.Val
-	l.tail = l.tail.next
+	l.tail = l.tail.prev
 	if l.tail != nil {
-		l.tail.prev = nil
+		l.tail.next = nil
 	}
 	return v, nil
 }
 
 func (l *List) Reverse() *List {
-	r := NewList()
-	current := l.head
+	current, op := l.head, l.head
 	for current != nil {
-		r.PushFront(current.Val)
-		current = current.prev
+		op = current
+		current = current.next
+		op.next = op.prev
+		op.prev = current
 	}
-	return r
+	l.tail = l.head
+	l.head = op
+	return l
 }
 
 func (l *List) First() *Node {
