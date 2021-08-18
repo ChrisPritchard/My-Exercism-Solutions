@@ -47,6 +47,9 @@ func (l *List) PushFront(v interface{}) {
 		l.head.prev = newHead
 	}
 	l.head = newHead
+	if l.tail == nil {
+		l.tail = l.head
+	}
 }
 
 func (l *List) PushBack(v interface{}) {
@@ -55,6 +58,9 @@ func (l *List) PushBack(v interface{}) {
 		l.tail.next = newTail
 	}
 	l.tail = newTail
+	if l.head == nil {
+		l.head = l.tail
+	}
 }
 
 func (l *List) PopFront() (interface{}, error) {
@@ -65,6 +71,9 @@ func (l *List) PopFront() (interface{}, error) {
 	l.head = l.head.next
 	if l.head != nil {
 		l.head.prev = nil
+	}
+	if l.head == nil {
+		l.tail = nil
 	}
 	return v, nil
 }
@@ -77,6 +86,9 @@ func (l *List) PopBack() (interface{}, error) {
 	l.tail = l.tail.prev
 	if l.tail != nil {
 		l.tail.next = nil
+	}
+	if l.tail == nil {
+		l.head = nil
 	}
 	return v, nil
 }
