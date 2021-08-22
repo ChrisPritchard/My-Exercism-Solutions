@@ -7,6 +7,27 @@ var E Dir = 'E'
 var S Dir = 'S'
 var W Dir = 'W'
 
+var left = map[Dir]Dir{
+	N: W,
+	W: S,
+	S: E,
+	E: N,
+}
+
+var right = map[Dir]Dir{
+	N: W,
+	W: S,
+	S: E,
+	E: N,
+}
+
+var advance = map[Dir][2]int{
+	N: {1, 0},
+	W: {0, -1},
+	S: {-1, 0},
+	E: {0, 1},
+}
+
 type Action byte
 
 func (d Dir) String() string {
@@ -14,54 +35,22 @@ func (d Dir) String() string {
 }
 
 func Advance() {
-	switch Step1Robot.Dir {
-	case N:
-		Step1Robot.Y++
-	case S:
-		Step1Robot.Y--
-	case E:
-		Step1Robot.X++
-	case W:
-		Step1Robot.X--
-	}
-}
-
-func Right() {
-	switch Step1Robot.Dir {
-	case N:
-		Step1Robot.Dir = E
-	case S:
-		Step1Robot.Dir = W
-	case E:
-		Step1Robot.Dir = S
-	case W:
-		Step1Robot.Dir = N
-	}
+	delta := advance[Step1Robot.Dir]
+	Step1Robot.X += delta[0]
+	Step1Robot.Y += delta[1]
 }
 
 func Left() {
-	switch Step1Robot.Dir {
-	case N:
-		Step1Robot.Dir = W
-	case S:
-		Step1Robot.Dir = E
-	case E:
-		Step1Robot.Dir = N
-	case W:
-		Step1Robot.Dir = S
-	}
+	Step1Robot.Dir = left[Step1Robot.Dir]
+}
+
+func Right() {
+	Step1Robot.Dir = right[Step1Robot.Dir]
 }
 
 func StartRobot(cmd chan Command, act chan Action) {
 	for c := range cmd {
-		switch c {
-		case 'R':
-			act <- 'R'
-		case 'L':
-			act <- 'L'
-		case 'A':
-			act <- 'A'
-		}
+		act <- Action(byte(c))
 	}
 	close(act)
 }
@@ -71,39 +60,14 @@ func Room(extent Rect, robot Step2Robot, act chan Action, rep chan Step2Robot) {
 	for a := range act {
 		switch a {
 		case 'R':
-			switch current.Dir {
-			case N:
-				current.Dir = E
-			case S:
-				current.Dir = W
-			case E:
-				current.Dir = S
-			case W:
-				current.Dir = N
-			}
+			current.Dir = right[current.Dir]
 		case 'L':
-			switch current.Dir {
-			case N:
-				current.Dir = W
-			case S:
-				current.Dir = E
-			case E:
-				current.Dir = N
-			case W:
-				current.Dir = S
-			}
+			current.Dir = left[current.Dir]
 		case 'A':
 			candidate := current
-			switch candidate.Dir {
-			case N:
-				candidate.Northing++
-			case S:
-				candidate.Northing--
-			case E:
-				candidate.Easting++
-			case W:
-				candidate.Easting--
-			}
+			delta := advance[current.Dir]
+			candidate.Northing += RU(delta[0])
+			candidate.Easting += RU(delta[1])
 			if candidate.Easting < extent.Min.Easting || candidate.Easting > extent.Max.Easting {
 				continue
 			}
