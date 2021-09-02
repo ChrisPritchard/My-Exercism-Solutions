@@ -1,5 +1,10 @@
 # Octal
 
+Welcome to Octal on Exercism's C# Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+
+## Instructions
+
 Convert an octal number, represented as a string (e.g. '1735263'), to its
 decimal equivalent using first principles (i.e. no, you may not use built-in or
 external libraries to accomplish the conversion).
@@ -46,18 +51,19 @@ So:
  = 155
 ```
 
-## Running the tests
-
-To run the tests, run the command `dotnet test` from within the exercise directory.
-
-## Further information
-
-For more detailed information about the C# track, including how to get help if
-you're having trouble, please visit the exercism.io [C# language page](http://exercism.io/languages/csharp/resources).
-
 ## Source
 
-All of Computer Science [http://www.wolframalpha.com/input/?i=base+8](http://www.wolframalpha.com/input/?i=base+8)
+### Created by
 
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @bressain
+
+### Contributed to by
+
+- @ErikSchierboom
+- @j2jensen
+- @jwood803
+- @wolf99
+
+### Based on
+
+All of Computer Science - http://www.wolframalpha.com/input/?i=base+8
