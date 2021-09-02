@@ -1,5 +1,10 @@
 # Binary
 
+Welcome to Binary on Exercism's C# Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+
+## Instructions
+
 Convert a binary number, represented as a string (e.g. '101010'), to its decimal equivalent using first principles.
 
 Implement binary to decimal conversion. Given a binary input
@@ -30,18 +35,19 @@ Binary is similar, but uses powers of 2 rather than powers of 10.
 
 So: `101 => 1*2^2 + 0*2^1 + 1*2^0 => 1*4 + 0*2 + 1*1 => 4 + 1 => 5 base 10`.
 
-## Running the tests
-
-To run the tests, run the command `dotnet test` from within the exercise directory.
-
-## Further information
-
-For more detailed information about the C# track, including how to get help if
-you're having trouble, please visit the exercism.io [C# language page](http://exercism.io/languages/csharp/resources).
-
 ## Source
 
-All of Computer Science [http://www.wolframalpha.com/input/?i=binary&a=*C.binary-_*MathWorld-](http://www.wolframalpha.com/input/?i=binary&a=*C.binary-_*MathWorld-)
+### Created by
 
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @bressain
+
+### Contributed to by
+
+- @ErikSchierboom
+- @j2jensen
+- @jwood803
+- @wolf99
+
+### Based on
+
+All of Computer Science - http://www.wolframalpha.com/input/?i=binary&a=*C.binary-_*MathWorld-
