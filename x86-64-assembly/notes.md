@@ -12,229 +12,50 @@ The return val will be `eax` (eg set this to `0` for false, `1` for true)
 
 ## Register reference
 
-<table class="wikitable" border="1">
+```
+64-bit	32-bit	16-bit	8 high  8-bit   Description
+---------------------------------------------------
+RAX	    EAX	    AX	    AH	    AL	    Accumulator
+RBX	    EBX	    BX	    BH	    BL	    Base
+RCX	    ECX	    CX	    CH	    CL	    Counter
+RDX	    EDX	    DX	    DH	    DL	    Data (commonly extends the A register)
+RSI	    ESI	    SI	    N/A	    SIL	    Source index for string operations
+RDI	    EDI	    DI	    N/A	    DIL	    Destination index for string operations
+RSP	    ESP	    SP	    N/A	    SPL	    Stack Pointer
+RBP	    EBP	    BP	    N/A	    BPL	    Base Pointer (meant for stack frames)
+R8	    R8D	    R8W	    N/A	    R8B	    General purpose
+R9	    R9D	    R9W	    N/A	    R9B	    General purpose
+R10	    R10D	R10W	N/A	    R10B	General purpose
+R11	    R11D	R11W	N/A	    R11B	General purpose
+R12	    R12D	R12W	N/A	    R12B	General purpose
+R13	    R13D	R13W	N/A	    R13B	General purpose
+R14	    R14D	R14W	N/A	    R14B	General purpose
+R15	    R15D	R15W	N/A	    R15B	General purpose
+```
 
-<tbody><tr>
-<th colspan="5"> Monikers
-</th>
-<th rowspan="2"> Description
-</th></tr>
-<tr>
-<th> 64-bit
-</th>
-<th> 32-bit
-</th>
-<th> 16-bit
-</th>
-<th> 8 high bits of lower 16 bits
-</th>
-<th> 8-bit
-</th></tr>
-<tr>
-<td> RAX
-</td>
-<td> EAX
-</td>
-<td> AX
-</td>
-<td> AH
-</td>
-<td> AL
-</td>
-<td> Accumulator
-</td></tr>
-<tr>
-<td> RBX
-</td>
-<td> EBX
-</td>
-<td> BX
-</td>
-<td> BH
-</td>
-<td> BL
-</td>
-<td> Base
-</td></tr>
-<tr>
-<td> RCX
-</td>
-<td> ECX
-</td>
-<td> CX
-</td>
-<td> CH
-</td>
-<td> CL
-</td>
-<td> Counter
-</td></tr>
-<tr>
-<td> RDX
-</td>
-<td> EDX
-</td>
-<td> DX
-</td>
-<td> DH
-</td>
-<td> DL
-</td>
-<td> Data (commonly extends the A register)
-</td></tr>
-<tr>
-<td> RSI
-</td>
-<td> ESI
-</td>
-<td> SI
-</td>
-<td> N/A
-</td>
-<td> SIL
-</td>
-<td> Source index for string operations
-</td></tr>
-<tr>
-<td> RDI
-</td>
-<td> EDI
-</td>
-<td> DI
-</td>
-<td> N/A
-</td>
-<td> DIL
-</td>
-<td> Destination index for string operations
-</td></tr>
-<tr>
-<td> RSP
-</td>
-<td> ESP
-</td>
-<td> SP
-</td>
-<td> N/A
-</td>
-<td> SPL
-</td>
-<td> Stack Pointer
-</td></tr>
-<tr>
-<td> RBP
-</td>
-<td> EBP
-</td>
-<td> BP
-</td>
-<td> N/A
-</td>
-<td> BPL
-</td>
-<td> Base Pointer (meant for stack frames)
-</td></tr>
-<tr>
-<td> R8
-</td>
-<td> R8D
-</td>
-<td> R8W
-</td>
-<td> N/A
-</td>
-<td> R8B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R9
-</td>
-<td> R9D
-</td>
-<td> R9W
-</td>
-<td> N/A
-</td>
-<td> R9B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R10
-</td>
-<td> R10D
-</td>
-<td> R10W
-</td>
-<td> N/A
-</td>
-<td> R10B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R11
-</td>
-<td> R11D
-</td>
-<td> R11W
-</td>
-<td> N/A
-</td>
-<td> R11B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R12
-</td>
-<td> R12D
-</td>
-<td> R12W
-</td>
-<td> N/A
-</td>
-<td> R12B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R13
-</td>
-<td> R13D
-</td>
-<td> R13W
-</td>
-<td> N/A
-</td>
-<td> R13B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R14
-</td>
-<td> R14D
-</td>
-<td> R14W
-</td>
-<td> N/A
-</td>
-<td> R14B
-</td>
-<td> General purpose
-</td></tr>
-<tr>
-<td> R15
-</td>
-<td> R15D
-</td>
-<td> R15W
-</td>
-<td> N/A
-</td>
-<td> R15B
-</td>
-<td> General purpose
-</td></tr></tbody></table>
+# Compiling and Debugging
+
+Debugging can be done using IDA Freeware
+
+Assembly requires a few directives to become a win exe. For example, assuming single function is 'distance' (from the hamming challenge) and takes two args, add initial code like so:
+
+```assembly
+default rel
+section .rodata
+arg1: db "GGACGGATTCTG", 0 ; used for this specific function
+arg2: db "AGGACGGATTCT", 0
+
+section .text
+global main ; key parts to add from here...
+main:
+    lea rsi, [arg1]
+    lea rdi, [arg2]
+    call distance
+    ret ; to here
+distance:
+    ; rest of code. remove original 'global distance'
+```
+
+then compile to a executable that can be opened with ida as so (assuming assembly is named `hamming.asm`):
+
+```nasm -f win64 -o win.obj hamming.asm && gcc.exe win.obj -o win.exe```

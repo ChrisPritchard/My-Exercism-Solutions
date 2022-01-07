@@ -24,6 +24,11 @@ void test_single_letter_different_strands(void) {
     TEST_ASSERT_EQUAL_INT(1, distance("G", "T"));
 }
 
+void test_short_different_strands(void) {
+    
+    TEST_ASSERT_EQUAL_INT(2, distance("ABCDE", "ABEDC"));
+}
+
 void test_long_identical_strands(void) {
     
     TEST_ASSERT_EQUAL_INT(0, distance("GGACTGAAATCTG", "GGACTGAAATCTG"));
@@ -61,6 +66,7 @@ int main(void) {
     RUN_TEST(test_single_letter_different_strands);
     RUN_TEST(test_long_identical_strands);
     RUN_TEST(test_long_different_strands);
+    RUN_TEST(test_short_different_strands);
     RUN_TEST(test_disallow_first_strand_longer);
     RUN_TEST(test_disallow_second_strand_longer);
     RUN_TEST(test_disallow_left_empty_strand);

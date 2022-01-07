@@ -4,8 +4,8 @@ distance:
     mov rax, 0
     mov rcx, 0
 test_char:
-    mov r8, [rsi+rcx]
-    mov r9, [rdi+rcx]
+    movzx r8, byte [rsi+rcx]
+    movzx r9, byte [rdi+rcx]
     cmp r8, r9
     je go_next
     inc rax
