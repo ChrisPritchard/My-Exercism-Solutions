@@ -35,22 +35,18 @@ void test_eggs_not_allergic_to_anything(void) {
 }
 
 void test_allergic_only_to_eggs(void) {
-    TEST_IGNORE();
     TEST_ASSERT_TRUE(allergic_to(EGGS, 1));
 }
 
 void test_allergic_to_eggs_and_something_else(void) {
-    TEST_IGNORE();
     TEST_ASSERT_TRUE(allergic_to(EGGS, 3));
 }
 
 void test_allergic_to_something_but_not_eggs(void) {
-    TEST_IGNORE();
     TEST_ASSERT_FALSE(allergic_to(EGGS, 2));
 }
 
 void test_eggs_allergic_to_everything(void) {
-    TEST_IGNORE();
     TEST_ASSERT_TRUE(allergic_to(EGGS, 255));
 }
 
