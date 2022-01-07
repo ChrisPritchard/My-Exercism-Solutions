@@ -42,20 +42,26 @@ Assembly requires a few directives to become a win exe. For example, assuming si
 ```assembly
 default rel
 section .rodata
-arg1: db "GGACGGATTCTG", 0 ; used for this specific function
+arg1: db "GGACGGATTCTG", 0  ; used for this specific function
 arg2: db "AGGACGGATTCT", 0
 
 section .text
-global main ; key parts to add from here...
+global main                 ; key parts to add from here...
 main:
     lea rsi, [arg1]
     lea rdi, [arg2]
     call distance
-    ret ; to here
+    ret                     ; to here
 distance:
-    ; rest of code. remove original 'global distance'
+                            ; rest of code. remove original 'global distance'
 ```
 
 then compile to a executable that can be opened with ida as so (assuming assembly is named `hamming.asm`):
 
 ```nasm -f win64 -o win.obj hamming.asm && gcc.exe win.obj -o win.exe```
+
+(note the above is done using wsl, which can run windows exes like gcc.exe)
+
+To do the equiv on linux (and use gdb or r2 or whatever):
+
+```nasm -f elf64 -o lin.o hamming.asm && ld -o lin lin.o && ./lin```
