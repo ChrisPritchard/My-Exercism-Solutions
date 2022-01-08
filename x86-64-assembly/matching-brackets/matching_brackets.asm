@@ -13,32 +13,40 @@ inspect_char:
     je finished
     
     cmp r11, 5Bh        ; [
-    inc r8
-    jmp move_next
-
+    je add_bracket
     cmp r11, 5Dh        ; ]
-    dec r8
-    jmp move_next
-
+    je rem_bracket
     cmp r11, 7Bh        ; {
-    inc r9
-    jmp move_next
-
+    je add_brace
     cmp r11, 7Dh        ; }
-    dec r9
-    jmp move_next
-
+    je rem_brace
     cmp r11, 50h        ; (
-    inc r10
-    jmp move_next
-
+    je add_parens
     cmp r11, 51h        ; )
-    dec r10
-    jmp move_next
+    je rem_parens
 
 move_next:
     inc rcx
     jmp inspect_char
+
+add_bracket:
+    inc r8
+    jmp move_next
+rem_bracket:
+    dec r8
+    jmp move_next
+add_brace:
+    inc r9
+    jmp move_next
+rem_brace:
+    dec r9
+    jmp move_next
+add_parens:
+    inc r10
+    jmp move_next
+rem_parens:
+    dec r10
+    jmp move_next
 
 finished:
     add r8, r9
