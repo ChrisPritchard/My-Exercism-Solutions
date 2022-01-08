@@ -9,8 +9,8 @@ allergic_to:
 
 global list
 list:
-                    ; rsi contains allergen set
-                    ; rdi is the buffer location
+                    ; rdi contains allergen set
+                    ; rsi is the buffer location
     mov rcx, 0      ; current allergen
     mov rbx, 0      ; size (and latest index)
 test_allergen:
