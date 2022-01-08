@@ -1,8 +1,7 @@
 # Notes
 
-The first arg passed to a function for these challenges will be in `edi/rdi`
-The second arg if it exists will be in `esi/rsi`
-The return val will be `eax` (eg set this to `0` for false, `1` for true)
+The args as registers in order are `rdi`,`rsi`,`rdx`,`rcx`,`r8`,`r9`. So if a function is being passed two parameters, the second one will be in `rsi`
+The return val will be `rax` (eg set this to `0` for false, `1` for true) if a function returns a val.
 
 `idiv` divides `edx:eax` by the val of `ecx`, and puts the result in `eax` with the remainder in `edx`
 
