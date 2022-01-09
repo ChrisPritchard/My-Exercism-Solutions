@@ -7,9 +7,14 @@ find:
     ; rdx is the value to search for
 
     mov r8, 0                       ; low
+
     movzx r9, sil
     dec r9                          ; high (final index of array) 
-    movzx r10, dl                    ; target
+
+    cmp r9, 0
+    jl invalid                      ; check for an empty array
+
+    movzx r10, dl                   ; target
 
 test_mid:
     mov rax, r9
@@ -18,10 +23,11 @@ test_mid:
     shr rax, 1                      ; divide by 2 by shifting right by 1
     add rax, r8                     ; mid value
 
-    cmp byte [rdi+(rax*4)], r10b    ; omg always remember sizes (without 'byte' this tripped me up)
+    movzx r11, byte [rdi+(rax*4)]
+    cmp r11, r10                 
     je finished
-    jl move_lower
-    jmp move_higher
+    jl move_higher                  ; value at rax is lower than target, so search upper bound
+    jmp move_lower                  ; value at rax is higher than target, so search lower bound
 move_lower:
     mov r9, rax
     dec r9
