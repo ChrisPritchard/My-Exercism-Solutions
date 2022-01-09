@@ -7,9 +7,9 @@ find:
     ; rdx is the value to search for
 
     mov r8, 0                       ; low
-    mov r9, rsi
+    movzx r9, sil
     dec r9                          ; high (final index of array) 
-    mov r10, rdx                    ; target
+    movzx r10, dl                    ; target
 
 test_mid:
     mov rax, r9
