@@ -34,7 +34,17 @@ R15	    R15D	R15W	N/A	    R15B	General purpose
 
 # Compiling and Debugging
 
-Debugging can be done using IDA Freeware
+Debugging can be done using IDA Freeware.
+
+## Option 1: compiling with test cases
+
+To compile asm with all the tests in exercism do as such (for windows):
+
+```nasm -f win64 -o binary-search.o binary_search.asm && gcc.exe binary-search.o binary_search_test.c vendor/*.c vendor/*.h -o win.exe```
+
+This can then be debugged with ida. Optionally Ida may ask for the c class files to show the c code, but you can switch back to assembly as needed in a different tab
+
+## Option 2: compiling alone
 
 Assembly requires a few directives to become a win exe. For example, assuming single function is 'distance' (from the hamming challenge) and takes two args, add initial code like so:
 
