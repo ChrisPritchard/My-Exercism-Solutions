@@ -3,9 +3,11 @@ global is_paired
 is_paired:
     ; rdi contains string to test
     ; rax contains result, true or false
-    mov r8, 0           ; brackets
-    mov r9, 0           ; braces
-    mov r10, 0          ; parentheses
+    ; for each open, push the stack
+    ; for each close, pop the stack. if whats popped matches close, good, else false
+    ; at the end, test stack pointer is zero
+
+    mov r8, rsp         ; starting stack pos
     mov rcx, 0          ; string index
 inspect_char:
     movzx r11, byte [rdi + rcx]
@@ -13,47 +15,50 @@ inspect_char:
     je finished
     
     cmp r11, 5Bh        ; [
-    je add_bracket
+    je add_start
     cmp r11, 5Dh        ; ]
-    je rem_bracket
+    je test_brackets
     cmp r11, 7Bh        ; {
-    je add_brace
+    je add_start
     cmp r11, 7Dh        ; }
-    je rem_brace
-    cmp r11, 50h        ; (
-    je add_parens
-    cmp r11, 51h        ; )
-    je rem_parens
+    je test_braces
+    cmp r11, 28h        ; (
+    je add_start
+    cmp r11, 29h        ; )
+    je test_parens
 
 move_next:
     inc rcx
     jmp inspect_char
 
-add_bracket:
-    inc r8
-    jmp move_next
-rem_bracket:
-    dec r8
-    jmp move_next
-add_brace:
-    inc r9
-    jmp move_next
-rem_brace:
-    dec r9
-    jmp move_next
-add_parens:
-    inc r10
-    jmp move_next
-rem_parens:
-    dec r10
+add_start:
+    push r11
     jmp move_next
 
+test_brackets:
+    pop r12
+    cmp r12, 5Bh
+    je move_next
+    jmp invalid
+test_braces:
+    pop r12
+    cmp r12, 7Bh
+    je move_next
+    jmp invalid
+test_parens:
+    pop r12
+    cmp r12, 28h
+    je move_next
+    jmp invalid
+
 finished:
-    add r8, r9
-    add r8, r10
-    jz valid
+    cmp r8, rsp
+    je valid
+invalid:
     mov rax, 0
+    mov rsp, r8
     ret
 valid:
     mov rax, 1
+    mov rsp, r8
     ret
