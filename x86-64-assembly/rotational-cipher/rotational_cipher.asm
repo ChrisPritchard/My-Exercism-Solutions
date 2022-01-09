@@ -15,24 +15,24 @@ rot_char:
     movzx r8, byte [rdi + rcx]
     cmp r8, 0
     je finished
-    cmp r8, 41h            ; test less than A
+    cmp r8, 'A'            ; test less than A
     jl copy_to_buffer
-    cmp r8, 5Ah            ; test less than or equal to Z
+    cmp r8, 'Z'            ; test less than or equal to Z
     jle rot_uppercase
-    cmp r8, 61h            ; test less than a
+    cmp r8, 'a'            ; test less than a
     jl copy_to_buffer
-    cmp r8, 7Ah            ; test less than or equal to z
+    cmp r8, 'z'            ; test less than or equal to z
     jle rot_lowercase
     jmp copy_to_buffer
 rot_uppercase:
     add r8, rsi            ; bottom 8 bytes of rsi
-    cmp r8, 5Ah
+    cmp r8, 'Z'
     jle copy_to_buffer
     sub r8, 26             ; rotate around
     jmp copy_to_buffer
 rot_lowercase:
     add r8, rsi            ; bottom 8 bytes of rsi
-    cmp r8, 7Ah
+    cmp r8, 'z'
     jle copy_to_buffer
     sub r8, 26             ; rotate around
     jmp copy_to_buffer

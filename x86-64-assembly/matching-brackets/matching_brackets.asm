@@ -14,17 +14,17 @@ inspect_char:
     cmp r11, 0
     je finished
     
-    cmp r11, 5Bh        ; [
+    cmp r11, '['
     je add_start
-    cmp r11, 5Dh        ; ]
+    cmp r11, ']'
     je test_brackets
-    cmp r11, 7Bh        ; {
+    cmp r11, '{'
     je add_start
-    cmp r11, 7Dh        ; }
+    cmp r11, '}'
     je test_braces
-    cmp r11, 28h        ; (
+    cmp r11, '('
     je add_start
-    cmp r11, 29h        ; )
+    cmp r11, ')'
     je test_parens
 
 move_next:
@@ -37,17 +37,17 @@ add_start:
 
 test_brackets:
     pop r12
-    cmp r12, 5Bh
+    cmp r12, '['
     je move_next
     jmp invalid
 test_braces:
     pop r12
-    cmp r12, 7Bh
+    cmp r12, '{'
     je move_next
     jmp invalid
 test_parens:
     pop r12
-    cmp r12, 28h
+    cmp r12, '('
     je move_next
     jmp invalid
 
