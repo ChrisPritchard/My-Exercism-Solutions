@@ -16,14 +16,16 @@ invalid:
 
 global total
 total:
-    mov rdi, 1
-    mov r8, 0
+    mov r9, 1   ; current square
+    mov r8, 0   ; total
 add_next:
-    cmp rdi, 64
+    cmp r9, 64
     jg finished
+    mov rdi, r9
     call square
     add r8, rax
-    inc rdi
+    inc r9      ; move to next square index
+    jmp add_next
 finished:
-    mov rax, r9
+    mov rax, r8 ; move final total to output var
     ret
